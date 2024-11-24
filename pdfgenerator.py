@@ -5,6 +5,18 @@ import sys
 from PIL import Image, ImageFont, ImageDraw
 import re
 
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
+
 usersDir = 'C:\\Users\\'
 savedGamesDir = "\\Saved Games\\DCS\\Config\\Input\\"
 
@@ -263,8 +275,8 @@ def generateImage(keybindsList, frameworks):
     font = ImageFont.truetype("arial.ttf", 10)
     for module, devices in keybindsList.items():
         if devices is not None:
-            print("---------------------")
-            print(module)
+            print()
+            print(f"{bcolors.HEADER}{module}{bcolors.ENDC}")
             for device, binds in devices.items():
                 if device.startswith("VPC MongoosT-50CM3"):
                     image = Image.open("./templatefiles/mongoosethrottle.png")
@@ -273,9 +285,9 @@ def generateImage(keybindsList, frameworks):
                     image = Image.open("./templatefiles/constellationalphaprime.png")
                     draw = ImageDraw.Draw(image)
                 print()
-                print(device)
+                print(f"{bcolors.BOLD}{device}{bcolors.ENDC}")
                 for i in binds:
-                    print(i["name"] + " | " + i["key"] + " | ", frameworks[device][i["key"]])
+                    print(f"{i["name"]} | {i["key"]} | {frameworks[device][i["key"]]}")
                     x = frameworks[device][i["key"]][0]
                     y = frameworks[device][i["key"]][1]
                     width = frameworks[device][i["key"]][2]
