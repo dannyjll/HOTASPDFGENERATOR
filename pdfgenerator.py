@@ -235,25 +235,23 @@ def getKeybindsFromGame(user, module, selectedDevices):
                 with open(luaDir, "r") as file:
                     luaContent = file.read()
                     keybinding_pattern = re.compile(
-                        r'\["(d\d+pnil.+?)"\]\s*=\s*\{\s*'
-                        r'\["added"\]\s*=\s*\{\s*'
+                        r'\[\"(d\d+pnil.+?)\"\]\s*=\s*\{\s*'
+                        r'\[\"added\"\]\s*=\s*\{\s*'
                         r'\[1\]\s*=\s*\{\s*'
-                        r'\["key"\]\s*=\s*"(JOY_BTN\d+)",\s*\},\s*\},\s*'
-                        r'\["name"\]\s*=\s*"(.*?)",\s*\},',
+                        r'\[\"key\"\]\s*=\s*\"(JOY_BTN\d+)\",\s*\},\s*\},\s*'
+                        r'\[\"name\"\]\s*=\s*\"(.*?)\",\s*\},',
                         re.DOTALL
                     )
                     matches = keybinding_pattern.findall(luaContent)
                     keybindings = []
                     for match in matches:
+                        name = match[2].split("\"")[0]
                         keybinding = {
                             "id": match[0],       
                             "key": match[1],       
-                            "name": match[2]       
+                            "name": name       
                         }
-                        if "removed" in keybinding["name"]:
-                            pass
-                        else:
-                            keybindings.append(keybinding)
+                        keybindings.append(keybinding)
                     deviceBindings[mod][device] = keybindings
         except Exception as e:
             print(f"Could not get device for this module. See error {e}.")
@@ -264,8 +262,6 @@ def getKeybindsFromGame(user, module, selectedDevices):
 def generateImage(keybindsList, frameworks):
     font = ImageFont.truetype("arial.ttf", 10)
     for module, devices in keybindsList.items():
-        print("---------------------")
-        print(module)
         if devices is not None:
             for device, binds in devices.items():
                 if device.startswith("VPC MongoosT-50CM3"):
@@ -274,10 +270,7 @@ def generateImage(keybindsList, frameworks):
                 elif device.startswith("VPC Stick MT-50CM3"): 
                     image = Image.open("./templatefiles/constellationalphaprime.png")
                     draw = ImageDraw.Draw(image)
-                print()
-                print(device)
                 for i in binds:
-                    print(i["name"] + " | " + i["key"] + " | ", frameworks[device][i["key"]])
                     x = frameworks[device][i["key"]][0]
                     y = frameworks[device][i["key"]][1]
                     width = frameworks[device][i["key"]][2]
