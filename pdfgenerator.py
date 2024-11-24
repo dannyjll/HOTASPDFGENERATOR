@@ -263,6 +263,8 @@ def generateImage(keybindsList, frameworks):
     font = ImageFont.truetype("arial.ttf", 10)
     for module, devices in keybindsList.items():
         if devices is not None:
+            print("---------------------")
+            print(module)
             for device, binds in devices.items():
                 if device.startswith("VPC MongoosT-50CM3"):
                     image = Image.open("./templatefiles/mongoosethrottle.png")
@@ -270,7 +272,10 @@ def generateImage(keybindsList, frameworks):
                 elif device.startswith("VPC Stick MT-50CM3"): 
                     image = Image.open("./templatefiles/constellationalphaprime.png")
                     draw = ImageDraw.Draw(image)
+                print()
+                print(device)
                 for i in binds:
+                    print(i["name"] + " | " + i["key"] + " | ", frameworks[device][i["key"]])
                     x = frameworks[device][i["key"]][0]
                     y = frameworks[device][i["key"]][1]
                     width = frameworks[device][i["key"]][2]
