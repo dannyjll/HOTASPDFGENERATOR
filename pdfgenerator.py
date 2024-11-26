@@ -81,7 +81,7 @@ def getAllDevices(user):
     for module in os.listdir(usersDir + user + savedGamesDir):
         print(usersDir + user + savedGamesDir + module)
         if os.path.isdir(usersDir + user + savedGamesDir + module):
-            for device in os.listdir(usersDir + user + savedGamesDir + module + "\joystick\\"):
+            for device in os.listdir(usersDir + user + savedGamesDir + module + "\\" + "joystick\\"):
                 devices.append(device)
     noduplicatedevices = set(devices)
     return noduplicatedevices
@@ -103,7 +103,7 @@ def getSavedDevices(user, module):
         else: 
             try:
                 module = module[0]
-                savedDevices = os.listdir(usersDir + user + savedGamesDir + module + "\joystick\\")
+                savedDevices = os.listdir(usersDir + user + savedGamesDir + module + "\\" + "joystick\\")
                 devices = []
                 for i in savedDevices:
                     if i.endswith(".lua"):
@@ -116,6 +116,7 @@ def getSavedDevices(user, module):
 
 def getDeviceSelection(user, devices):
     print("Select your desired devices below. If you wish to select multiple devices, deliminate them with a comma and a space. e.g. 1, 3, 5...")
+    devices.sort()
     for index, device in enumerate(devices, start=1):
         print(f"{index}. {device}")
     try:
@@ -146,7 +147,7 @@ def createDevicesFrameworks(selectedDevices):
                 "JOY_BTN7": (220, 323, 100, 34),
                 "JOY_BTN8": (836, 174, 100, 34), #POR
                 "JOY_BTN9": (836, 121, 100, 34),
-                "JOY_BTN10": (940, 174, 100, 34),
+                "JOY_BTN10": (980, 174, 100, 34),
                 "JOY_BTN11": (836, 227, 100, 34), 
                 "JOY_BTN12": (692, 174, 100, 34),
                 "JOY_BTN13": (1191, 132, 100, 34),
@@ -229,6 +230,11 @@ def createDevicesFrameworks(selectedDevices):
                 "JOY_BTN30": (1160, 336, 100, 34),
                 "JOY_BTN31": (742, 878, 100, 34),
                 "JOY_BTN32": (742, 529, 100, 34),
+                "JOY_BTN33": (0, 0, 100, 34),
+                "JOY_BTN34": (0, 0, 100, 34),
+                "JOY_BTN35": (0, 0, 100, 34),
+                "JOY_BTN36": (0, 0, 100, 34),
+
             }
             frameworks[device] = text_boxes
         else:
@@ -247,7 +253,7 @@ def getKeybindsFromGame(user, module, selectedDevices):
                 with open(luaDir, "r") as file:
                     luaContent = file.read()
                     keybinding_pattern = re.compile(
-                        r'\[\"(d\d+pnil.+?)\"\]\s*=\s*\{\s*'
+                        r'\[\"(d[a-z0-9-]+)\"\]\s*=\s*\{\s*'
                         r'\[\"added\"\]\s*=\s*\{\s*'
                         r'\[1\]\s*=\s*\{\s*'
                         r'\[\"key\"\]\s*=\s*\"(JOY_BTN\d+)\",\s*\},\s*\},\s*'
